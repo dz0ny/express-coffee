@@ -2,6 +2,7 @@ fs            = require 'fs'
 {print}       = require 'util'
 which         = require('which')
 {spawn, exec} = require 'child_process'
+path          = require('path')
 
 # ANSI Terminal Colors
 bold  = '\x1B[0;1m'
@@ -12,7 +13,14 @@ reset = '\x1B[0m'
 pkg = JSON.parse fs.readFileSync('./package.json')
 testCmd = pkg.scripts.test
 startCmd = pkg.scripts.start
-  
+
+copyComponentToAssets = (source, target) ->
+
+  source = path.join __dirname, source
+  target = path.join __dirname, target
+  log "Copying #{source} to #{target}", green
+  spawn "rm", ['-rf', target] #remove target directory
+  spawn "cp", ['-rf', source, target] #copy files
 
 log = (message, color, explanation) ->
   console.log color + message + reset + ' ' + (explanation or '')
@@ -62,7 +70,13 @@ task 'docs', 'Generate annotated source code with Docco', ->
 
 
 task 'build', ->
-  build -> log ":)", green
+  log ":)", green
+
+task 'bowerize', ->
+  copyComponentToAssets "components/bootstrap/img/", "public/img/bootstrap"
+  copyComponentToAssets "components/bootstrap/js/", "assets/js/bootstrap"
+  copyComponentToAssets "components/bootstrap/less/", "assets/css/bootstrap"
+  copyComponentToAssets "components/jquery/", "assets/js/jquery"
 
 task 'spec', 'Run Mocha tests', ->
   build -> test -> log ":)", green

@@ -11,6 +11,8 @@ app = express();
 
 app.use(assets());
 
+app.use(express["static"](process.cwd() + '/public'));
+
 app.set('view engine', 'jade');
 
 app.get('/', function(req, resp) {
