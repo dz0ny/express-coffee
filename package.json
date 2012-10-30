@@ -11,11 +11,12 @@
     "nib": "0.4.1",
     "markdown": "0.3.1",
     "which": "*",
-    "mongoose": "~3.3.1"
+    "mongoose": "~3.3.1",
+    "passport": "~0.1.12"
   },
   "scripts": {
     "install": "node_modules/coffee-script/bin/cake build",
-    "start": "node server.js",
+    "start": "nf start",
     "test": "mocha --require should --compilers coffee:coffee-script --colors"
   },
   "devDependencies": {
